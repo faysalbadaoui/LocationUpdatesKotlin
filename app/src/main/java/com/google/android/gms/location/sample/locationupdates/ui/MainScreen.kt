@@ -23,6 +23,16 @@ fun MainScreen(context: MainActivity, viewModel: MainViewModel) {
     var longitude by remember { mutableDoubleStateOf(0.0) }
     var latitude by remember { mutableDoubleStateOf(0.0) }
     var lastUpdateTime by remember { mutableStateOf("") }
+    var startButtonEnabled by remember { mutableStateOf(false) }
+    var stopButtonEnabled by remember { mutableStateOf(false) }
+
+    viewModel.startButtonEnabled.observe(context) {
+        startButtonEnabled = it
+    }
+
+    viewModel.stopButtonEnabled.observe(context) {
+        stopButtonEnabled = it
+    }
 
     viewModel.longitude.observe(context) {
         longitude = it
@@ -39,10 +49,10 @@ fun MainScreen(context: MainActivity, viewModel: MainViewModel) {
     Box(modifier = Modifier.fillMaxSize()){
         Column {
             Row {
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = { viewModel.startUpdatesButtonHandler(context) }, enabled = startButtonEnabled) {
                     Text("START UPDATES")
                 }
-                Button(onClick = { /*TODO*/ }) {
+                Button(onClick = { viewModel.stopUpdatesButtonHandler(context) }, enabled = stopButtonEnabled) {
                     Text("STOP UPDATES")
                 }
             }
