@@ -52,6 +52,11 @@ class LocationForegroundService : Service() {
         return null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback)
+    }
+
     private fun createLocationCallback() {
         mLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
