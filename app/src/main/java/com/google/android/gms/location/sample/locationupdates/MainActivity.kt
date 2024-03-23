@@ -29,14 +29,18 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.android.gms.location.sample.locationupdates.core.MainViewModel
 import com.google.android.gms.location.sample.locationupdates.databinding.MainBinding
+import com.google.android.gms.location.sample.locationupdates.ui.MainScreen
 import com.google.android.material.snackbar.Snackbar
 import java.text.DateFormat
 import java.util.*
@@ -152,18 +156,10 @@ class MainActivity : AppCompatActivity() {
 
   public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = MainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        val toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
-
-        // Locate the UI widgets.
-        mStartUpdatesButton = binding.startUpdatesButton
-        mStopUpdatesButton = binding.stopUpdatesButton
-        mLatitudeTextView = binding.latitudeText
-        mLongitudeTextView = binding.longitudeText
-        mLastUpdateTimeTextView = binding.lastUpdateTimeText
+        val viewModel : MainViewModel by viewModels()
+        setContent {
+            MainScreen(this, viewModel)
+        }
 
         // Set labels.
         mLatitudeLabel = resources.getString(R.string.latitude_label)
