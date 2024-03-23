@@ -37,7 +37,6 @@ import com.google.android.gms.location.sample.locationupdates.core.MainViewModel
 import com.google.android.gms.location.sample.locationupdates.databinding.MainBinding
 import com.google.android.gms.location.sample.locationupdates.ui.MainScreen
 import com.google.android.material.snackbar.Snackbar
-import java.util.*
 
 
 /**
@@ -238,7 +237,7 @@ class MainActivity : AppCompatActivity() {
      * Updates all UI fields.
      */
     private fun updateUI() {
-        viewModel.setButtonsEnabledState()
+        viewModel.refreshButtonsState()
     }
 
     /**
@@ -263,7 +262,7 @@ class MainActivity : AppCompatActivity() {
         // recommended in applications that request frequent location updates.
         //mFusedLocationClient.removeLocationUpdates(mLocationCallback)
         mRequestingLocationUpdates = false
-        viewModel.setButtonsEnabledState()
+        viewModel.refreshButtonsState()
     }
 
     public override fun onResume() {

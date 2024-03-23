@@ -5,14 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.sample.locationupdates.MainActivity
-import java.util.Locale
 
 class MainViewModel : ViewModel() {
 
@@ -56,12 +54,12 @@ class MainViewModel : ViewModel() {
     fun startUpdatesButtonHandler(context: Context) {
         if (!MainActivity.mRequestingLocationUpdates) {
             MainActivity.mRequestingLocationUpdates = true
-            setButtonsEnabledState()
+            refreshButtonsState()
             val foregroundIntent = Intent(context, LocationForegroundService::class.java)
             context.startForegroundService(foregroundIntent)
         }
     }
-    fun setButtonsEnabledState() {
+    fun refreshButtonsState() {
         if (MainActivity.mRequestingLocationUpdates) {
             setButtonStartEnabled(false)
             setButtonStopEnabled(true)
@@ -74,11 +72,10 @@ class MainViewModel : ViewModel() {
      * Handles the Stop Updates button, and requests removal of location updates.
      */
     fun stopUpdatesButtonHandler(context: Context) {
-        // It is a good practice to remove location requests when the activity is in a paused or
-        // stopped state. Doing so helps battery performance and is especially
-        // recommended in applications that request frequent location updates.
         val serviceIntent = Intent(context, LocationForegroundService::class.java)
         context.stopService(serviceIntent)
+        MainActivity.mRequestingLocationUpdates = false
+        refreshButtonsState()
     }
 
     fun setCurrentLocation(
