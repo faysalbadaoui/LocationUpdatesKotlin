@@ -29,6 +29,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +38,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.location.sample.locationupdates.databinding.MainBinding
+import com.google.android.gms.location.sample.locationupdates.ui.MainScreen
 import com.google.android.material.snackbar.Snackbar
 import java.text.DateFormat
 import java.util.*
@@ -152,6 +154,10 @@ class MainActivity : AppCompatActivity() {
 
   public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContent {
+            MainScreen()
+        }
         binding = MainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val toolbar = binding.toolbar
