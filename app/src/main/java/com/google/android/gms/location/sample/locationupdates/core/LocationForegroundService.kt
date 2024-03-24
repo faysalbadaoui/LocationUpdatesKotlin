@@ -1,24 +1,27 @@
 package com.google.android.gms.location.sample.locationupdates.core
 
 import android.Manifest
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.google.android.gms.location.Priority
-import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.location.sample.locationupdates.MainActivity
 import com.google.android.gms.location.sample.locationupdates.MainActivity.Companion.context
 import com.google.android.gms.location.sample.locationupdates.MainActivity.Companion.mFusedLocationClient
@@ -42,10 +45,27 @@ class LocationForegroundService : Service() {
     private lateinit var mLocationCallback: LocationCallback
     override fun onCreate() {
         super.onCreate()
+        startForegroundService()
         createLocationCallback()
         createLocationRequest()
         buildLocationSettingsRequest()
         startLocationUpdates()
+    }
+
+    private fun startForegroundService() {
+        val CHANNEL_ID = "01"
+        val channel = NotificationChannel(
+            CHANNEL_ID,
+            "Accessing Location Service",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+            channel
+        )
+        val notification: Notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("Accessing Location Service")
+            .setContentText("The app is accessing the location service to retrieve the location").build()
+        startForeground(1, notification)
     }
 
     override fun onBind(intent: Intent?): IBinder? {

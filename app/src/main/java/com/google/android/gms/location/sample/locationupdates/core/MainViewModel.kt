@@ -57,6 +57,7 @@ class MainViewModel : ViewModel() {
             refreshButtonsState()
             val foregroundIntent = Intent(context, LocationForegroundService::class.java)
             context.startForegroundService(foregroundIntent)
+
         }
     }
     fun refreshButtonsState() {
